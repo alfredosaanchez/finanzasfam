@@ -205,6 +205,62 @@ input,select{font-family:var(--ff);outline:none;transition:all .2s}
 .btn-danger{background:rgba(248,113,113,.1);color:var(--danger);border:1px solid rgba(248,113,113,.3);padding:.65rem 1.2rem;border-radius:var(--r2);font-size:.82rem;font-weight:600;transition:all .2s;cursor:pointer}
 .btn-danger:hover{background:rgba(248,113,113,.2)}
 .perfil-section.danger-zone{border-color:rgba(248,113,113,.25)}
+
+/* METAS */
+.meta-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:2rem}
+.meta-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:1rem}
+.btn-add-meta{background:var(--savings);color:#fff;padding:.7rem 1.5rem;border-radius:var(--r2);font-weight:700;font-size:.85rem}
+.btn-add-meta:hover{filter:brightness(1.1)}
+.metas-list{display:flex;flex-direction:column;gap:1rem}
+.meta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;position:relative}
+.meta-card.completada{border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.04)}
+.meta-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:.5rem}
+.meta-emoji{font-size:1.8rem;flex-shrink:0;margin-right:.75rem}
+.meta-info{flex:1}
+.meta-nombre{font-size:1rem;font-weight:600;margin-bottom:.2rem}
+.meta-sub{font-size:.75rem;color:var(--muted)}
+.meta-badge{font-size:.7rem;padding:.25rem .6rem;border-radius:50px;font-weight:600;flex-shrink:0}
+.meta-badge.activa{background:rgba(129,140,248,.15);color:#818cf8;border:1px solid rgba(129,140,248,.3)}
+.meta-badge.completada{background:rgba(74,222,128,.15);color:var(--accent);border:1px solid rgba(74,222,128,.3)}
+.meta-progress-wrap{margin-bottom:1rem}
+.meta-progress-header{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:.4rem}
+.meta-progress-label{color:var(--muted)}
+.meta-progress-val{font-family:var(--mono);color:var(--savings)}
+.meta-progress-track{background:var(--surface2);border-radius:50px;height:12px;overflow:hidden}
+.meta-progress-fill{height:100%;border-radius:50px;background:var(--savings);transition:width .5s ease}
+.meta-progress-fill.done{background:var(--accent)}
+.meta-pct{text-align:right;font-size:.72rem;color:var(--muted);margin-top:.25rem}
+.meta-cronograma{background:var(--surface2);border-radius:var(--r2);padding:1rem;margin-bottom:1rem}
+.meta-cron-title{font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.05em;margin-bottom:.75rem}
+.cron-list{display:flex;flex-direction:column;gap:.4rem;max-height:160px;overflow-y:auto}
+.cron-item{display:flex;align-items:center;justify-content:space-between;font-size:.78rem;padding:.3rem 0;border-bottom:1px solid var(--border)}
+.cron-item:last-child{border-bottom:none}
+.cron-item.pasado{opacity:.45}
+.cron-item.proximo{color:var(--accent)}
+.cron-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;margin-right:.5rem}
+.cron-item.pasado .cron-dot{background:var(--accent)}
+.cron-item.proximo .cron-dot{background:var(--savings);box-shadow:0 0 0 3px rgba(129,140,248,.3)}
+.cron-fecha{color:var(--muted);flex:1}
+.cron-item.proximo .cron-fecha{color:var(--savings)}
+.cron-monto{font-family:var(--mono);flex-shrink:0}
+.meta-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.btn-meta-abonar{background:rgba(129,140,248,.15);color:#818cf8;border:1px solid rgba(129,140,248,.3);padding:.5rem 1rem;border-radius:var(--r2);font-size:.8rem;font-weight:600}
+.btn-meta-abonar:hover{background:rgba(129,140,248,.25)}
+.btn-meta-del{background:none;border:1px solid var(--border);color:var(--muted);padding:.5rem .75rem;border-radius:var(--r2);font-size:.8rem}
+.btn-meta-del:hover{border-color:var(--danger);color:var(--danger)}
+.meta-aportado{font-size:.78rem;color:var(--muted);margin-top:.5rem;font-family:var(--mono)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem}
+.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:2rem;width:100%;max-width:360px}
+.modal-title{font-family:var(--mono);font-size:1rem;margin-bottom:1.2rem}
+.modal-field{margin-bottom:1rem}
+.modal-field label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:.35rem}
+.modal-field input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:.65rem .9rem;color:var(--text);font-size:.9rem}
+.modal-field input:focus{border-color:var(--accent)}
+.modal-btns{display:flex;gap:.5rem;margin-top:1.2rem}
+.btn-modal-ok{flex:1;background:var(--accent);color:#0f1117;padding:.75rem;border-radius:var(--r2);font-weight:700;font-size:.88rem}
+.btn-modal-cancel{flex:1;background:none;border:1px solid var(--border2);color:var(--muted);padding:.75rem;border-radius:var(--r2);font-size:.88rem}
+.metas-empty{text-align:center;padding:3rem;color:var(--muted);font-size:.85rem}
+.metas-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:2rem}
 /* DETAILS */
 #screen-details{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
 .details-hero{background:var(--surface);border-bottom:1px solid var(--border);padding:2rem 1.5rem 3rem}
@@ -311,12 +367,14 @@ input,select{font-family:var(--ff);outline:none;transition:all .2s}
     <div class="tab active" onclick="switchTab('dashboard',this)">Dashboard</div>
     <div class="tab" onclick="switchTab('transacciones',this)">Transacciones</div>
     <div class="tab" onclick="switchTab('resumen',this)">Resumen</div>
+    <div class="tab" onclick="switchTab('metas',this)">🎯 Metas</div>
     <div class="tab" onclick="switchTab('perfil',this)">⚙️ Mi perfil</div>
   </div>
   <div class="app-content">
     <div id="tab-dashboard"></div>
     <div id="tab-transacciones" class="hidden"></div>
     <div id="tab-resumen" class="hidden"></div>
+    <div id="tab-metas" class="hidden"></div>
     <div id="tab-perfil" class="hidden"></div>
   </div>
 </div>
@@ -410,6 +468,7 @@ function rerenderCurrentTab(){
   if(currentTab==='dashboard')renderDashboard();
   else if(currentTab==='transacciones')renderTransacciones();
   else if(currentTab==='resumen')renderResumen();
+  else if(currentTab==='metas')renderMetas();
   else if(currentTab==='perfil')renderPerfil();
 }
 
@@ -497,7 +556,7 @@ function logout(){stopAutoRefresh();state.currentUser=null;showScreen('landing')
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if(el)el.classList.add('active');currentTab=name;
-  ['dashboard','transacciones','resumen','perfil'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('hidden',t!==name);});
+  ['dashboard','transacciones','resumen','metas','perfil'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('hidden',t!==name);});
   rerenderCurrentTab();
 }
 
@@ -641,6 +700,116 @@ async function resetMyTransactions(){
   hideLoading();
   const msg=document.getElementById('pf-save-msg');
   if(msg){msg.textContent='Transacciones borradas';setTimeout(()=>msg.textContent='',2000);}
+}
+
+// ── METAS DE AHORRO ───────────────────────────────────────────────
+function renderMetas(){
+  if(!state.metas) state.metas=[];
+  const metas=state.metas;
+  const u0=state.users[0];const u1=state.users[1];
+  const sal0=toUSD(toMonthly(u0.salary,u0.freq),u0.currency);
+  const sal1=toUSD(toMonthly(u1.salary,u1.freq),u1.currency);
+  const totalMensual=sal0+sal1;
+  const ahorroMensual=totalMensual*0.20;
+  const activas=metas.filter(m=>!m.completada);
+  const completadas=metas.filter(m=>m.completada);
+  const totalAportado=metas.reduce((a,m)=>a+(m.aportado||0),0);
+  const el=document.getElementById('tab-metas');
+  el.innerHTML='<div class="section-title">METAS DE AHORRO</div><div class="metas-summary"><div class="summary-card"><div class="sc-label">Metas activas</div><div class="sc-val" style="color:var(--savings)">'+activas.length+'</div></div><div class="summary-card"><div class="sc-label">Ahorro disponible/mes</div><div class="sc-val" style="color:var(--accent)">'+fmtBoth(ahorroMensual)+'</div><div class="sc-sub">20% ingreso familiar</div></div><div class="summary-card"><div class="sc-label">Total aportado</div><div class="sc-val" style="color:var(--savings)">'+fmtBoth(totalAportado)+'</div></div><div class="summary-card"><div class="sc-label">Completadas</div><div class="sc-val" style="color:var(--accent)">'+completadas.length+'</div></div></div><div class="meta-form"><div class="section-title" style="margin-bottom:1rem">NUEVA META</div><div class="meta-form-grid"><div class="f-field"><label>Que quieren comprar?</label><input id="meta-nombre" placeholder="Ej: Televisor, Viaje, Moto"></div><div class="f-field"><label>Precio</label><input type="number" id="meta-precio" placeholder="0.00"></div><div class="f-field"><label>Moneda</label><select id="meta-cur"><option value="USD">USD</option><option value="VES">VES</option></select></div><div class="f-field"><label>Prioridad</label><select id="meta-pri"><option value="alta">Alta</option><option value="media" selected>Media</option><option value="baja">Baja</option></select></div></div><div class="f-field" style="margin-bottom:1rem"><label>Emoji (opcional)</label><input id="meta-emoji" placeholder="TV, viaje, auto..." maxlength="4" style="max-width:120px"></div><button class="btn-add-meta" onclick="addMeta()">+ Agregar meta</button></div><div class="metas-list">'+([...activas,...completadas].length===0?'<div class="metas-empty">No hay metas todavia.<br>Agrega lo primero que quieren comprar juntos!</div>':[...activas,...completadas].map(m=>metaCardHTML(m,ahorroMensual)).join(''))+'</div>';
+}
+
+function metaCardHTML(meta,ahorroMensual){
+  const precioUSD=toUSD(meta.precio,meta.currency||'USD');
+  const aportado=meta.aportado||0;
+  const falta=Math.max(0,precioUSD-aportado);
+  const pct=precioUSD>0?Math.min(aportado/precioUSD*100,100):0;
+  const completada=meta.completada||aportado>=precioUSD;
+  const freq=state.users[state.currentUser].freq||'mensual';
+  const cron=calcCronograma(falta,ahorroMensual,freq);
+  const priColors={alta:'#f87171',media:'#fb923c',baja:'#4ade80'};
+  const priColor=priColors[meta.prioridad||'media'];
+  const metaFecha=cron.length>0?' · Meta: <strong style="color:var(--savings)">'+cron[cron.length-1].fecha+'</strong>':'';
+  return '<div class="meta-card '+(completada?'completada':'')+'"><div class="meta-top"><div style="display:flex;align-items:center;flex:1"><div class="meta-emoji">'+(meta.emoji||'🎯')+'</div><div class="meta-info"><div class="meta-nombre">'+meta.nombre+'</div><div class="meta-sub">'+fmt(meta.precio,meta.currency||'USD')+' · <span style="color:'+priColor+';font-weight:600">'+(meta.prioridad||'media')+'</span>'+metaFecha+'</div></div></div><span class="meta-badge '+(completada?'completada':'activa')+'">'+(completada?'Lograda!':'Ahorrando')+'</span></div><div class="meta-progress-wrap"><div class="meta-progress-header"><span class="meta-progress-label">Progreso</span><span class="meta-progress-val">'+fmtBoth(aportado)+' / '+fmtBoth(precioUSD)+'</span></div><div class="meta-progress-track"><div class="meta-progress-fill '+(completada?'done':'')+'" style="width:'+pct+'%"></div></div><div class="meta-pct">'+pct.toFixed(0)+'% · Faltan '+fmtBoth(falta)+'</div></div>'+((!completada&&cron.length>0)?'<div class="meta-cronograma"><div class="meta-cron-title">Cronograma de ahorro ('+freq+')</div><div class="cron-list">'+cron.map(c=>'<div class="cron-item '+(c.pasado?'pasado':'')+(c.proximo?' proximo':'')+'"><div class="cron-dot"></div><span class="cron-fecha">'+(c.pasado?'✓ ':c.proximo?'→ ':'')+c.fecha+(c.proximo?' — proximo cobro':'')+'</span><span class="cron-monto">'+fmtBoth(c.acumulado)+'</span></div>').join('')+'</div></div>':'')+'<div class="meta-actions">'+((!completada)?'<button class="btn-meta-abonar" onclick="abonarMeta(\''+meta.id+'\')">💰 Registrar abono</button>':'')+'<button class="btn-meta-del" onclick="deleteMeta(\''+meta.id+'\')">Eliminar</button></div>'+(aportado>0?'<div class="meta-aportado">Aportado hasta ahora: '+fmtBoth(aportado)+'</div>':'')+'</div>';
+}
+
+function calcCronograma(falta,ahorroMensual,freq){
+  if(falta<=0||ahorroMensual<=0) return [];
+  let aporte;
+  if(freq==='semanal') aporte=ahorroMensual/4.33;
+  else if(freq==='quincenal') aporte=ahorroMensual/2;
+  else aporte=ahorroMensual;
+  const hoy=new Date();
+  const items=[];
+  let acumulado=0;
+  let fecha=new Date(hoy);
+  // Avanzar a próximo día de cobro
+  if(freq==='semanal'){const days=(8-fecha.getDay())%7||7;fecha.setDate(fecha.getDate()+days);}
+  else if(freq==='quincenal'){if(fecha.getDate()<15)fecha.setDate(15);else{fecha.setMonth(fecha.getMonth()+1);fecha.setDate(1);}}
+  else{fecha.setMonth(fecha.getMonth()+1);fecha.setDate(1);}
+  let i=0;
+  while(acumulado<falta&&i<24){
+    acumulado=Math.min(acumulado+aporte,falta);
+    const esFuturo=fecha>hoy;
+    items.push({fecha:fecha.toLocaleDateString('es-VE',{day:'2-digit',month:'short',year:'numeric'}),acumulado,pasado:!esFuturo,proximo:esFuturo&&i===0});
+    if(freq==='semanal') fecha=new Date(fecha.getTime()+7*24*60*60*1000);
+    else if(freq==='quincenal'){if(fecha.getDate()===1)fecha.setDate(15);else{fecha.setMonth(fecha.getMonth()+1);fecha.setDate(1);}}
+    else fecha.setMonth(fecha.getMonth()+1);
+    i++;
+    if(acumulado>=falta) break;
+  }
+  return items;
+}
+
+async function addMeta(){
+  const nombre=document.getElementById('meta-nombre').value.trim();
+  const precio=parseFloat(document.getElementById('meta-precio').value)||0;
+  const currency=document.getElementById('meta-cur').value;
+  const prioridad=document.getElementById('meta-pri').value;
+  const emoji=document.getElementById('meta-emoji').value.trim()||'🎯';
+  if(!nombre||!precio) return;
+  const meta={id:'m'+Date.now(),nombre,precio,currency,prioridad,emoji,aportado:0,completada:false,creadoPor:state.currentUser,fechaCreacion:new Date().toISOString()};
+  if(!state.metas) state.metas=[];
+  state.metas.push(meta);
+  showLoading('Guardando meta...');
+  await saveToSheets({action:'addMeta',meta});
+  hideLoading();
+  document.getElementById('meta-nombre').value='';
+  document.getElementById('meta-precio').value='';
+  document.getElementById('meta-emoji').value='';
+  renderMetas();
+}
+
+function abonarMeta(id){
+  const overlay=document.createElement('div');
+  overlay.className='modal-overlay';overlay.id='modal-abono';
+  overlay.innerHTML='<div class="modal-box"><div class="modal-title">Registrar abono</div><div class="modal-field"><label>Monto a abonar</label><input type="number" id="abono-monto" placeholder="0.00"></div><div class="modal-field"><label>Moneda</label><select id="abono-cur"><option value="USD">USD</option><option value="VES">VES</option></select></div><div class="modal-btns"><button class="btn-modal-cancel" onclick="document.getElementById(\'modal-abono\').remove()">Cancelar</button><button class="btn-modal-ok" onclick="confirmarAbono(\''+id+'\')">Confirmar</button></div></div>';
+  document.body.appendChild(overlay);
+}
+
+async function confirmarAbono(id){
+  const monto=parseFloat(document.getElementById('abono-monto').value)||0;
+  const cur=document.getElementById('abono-cur').value;
+  if(!monto) return;
+  const montoUSD=toUSD(monto,cur);
+  document.getElementById('modal-abono')?.remove();
+  const meta=state.metas.find(m=>m.id===id);
+  if(!meta) return;
+  meta.aportado=(meta.aportado||0)+montoUSD;
+  const precioUSD=toUSD(meta.precio,meta.currency||'USD');
+  if(meta.aportado>=precioUSD) meta.completada=true;
+  showLoading('Guardando abono...');
+  await saveToSheets({action:'updateMeta',meta});
+  hideLoading();
+  renderMetas();
+}
+
+async function deleteMeta(id){
+  if(!confirm('Eliminar esta meta?')) return;
+  state.metas=(state.metas||[]).filter(m=>m.id!==id);
+  showLoading('Eliminando...');
+  await saveToSheets({action:'deleteMeta',id});
+  hideLoading();
+  renderMetas();
 }
 
 showScreen('landing');
