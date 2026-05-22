@@ -261,6 +261,38 @@ input,select{font-family:var(--ff);outline:none;transition:all .2s}
 .btn-modal-cancel{flex:1;background:none;border:1px solid var(--border2);color:var(--muted);padding:.75rem;border-radius:var(--r2);font-size:.88rem}
 .metas-empty{text-align:center;padding:3rem;color:var(--muted);font-size:.85rem}
 .metas-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:2rem}
+/* BANCOS */
+.bancos-totales{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-bottom:2rem}
+.banco-total-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem}
+.btc-label{font-size:.75rem;color:var(--muted);margin-bottom:.4rem}
+.btc-val{font-family:var(--mono);font-size:1.3rem;font-weight:500}
+.btc-sub{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+.bancos-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+@media(max-width:600px){.bancos-cols{grid-template-columns:1fr}}
+.bancos-user-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem}
+.bancos-user-header{display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem}
+.bancos-user-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0}
+.bancos-user-name{font-size:.9rem;font-weight:600}
+.bancos-user-total{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-left:auto}
+.banco-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:.9rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.75rem}
+.banco-icon{font-size:1.2rem;flex-shrink:0}
+.banco-info{flex:1;min-width:0}
+.banco-name{font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.banco-cur{font-size:.7rem;color:var(--muted);margin-top:.1rem}
+.banco-saldo{font-family:var(--mono);font-size:.9rem;font-weight:500;text-align:right;flex-shrink:0}
+.banco-saldo-usd{font-size:.7rem;color:var(--muted);text-align:right;font-family:var(--mono)}
+.banco-actions{display:flex;gap:.3rem;flex-shrink:0}
+.btn-banco-edit{background:none;border:1px solid var(--border);color:var(--muted);padding:.3rem .6rem;border-radius:var(--r2);font-size:.75rem;cursor:pointer}
+.btn-banco-edit:hover{border-color:var(--accent2);color:var(--accent2)}
+.btn-banco-del{background:none;border:1px solid var(--border);color:var(--muted);padding:.3rem .6rem;border-radius:var(--r2);font-size:.75rem;cursor:pointer}
+.btn-banco-del:hover{border-color:var(--danger);color:var(--danger)}
+.btn-add-banco{background:rgba(34,211,238,.1);color:var(--accent2);border:1px solid rgba(34,211,238,.25);padding:.6rem 1rem;border-radius:var(--r2);font-size:.8rem;font-weight:600;width:100%;margin-top:.5rem;cursor:pointer}
+.btn-add-banco:hover{background:rgba(34,211,238,.18)}
+.bancos-rule-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:2rem}
+.rule-toggle{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.rule-toggle-btn{padding:.4rem .9rem;border-radius:50px;font-size:.78rem;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s}
+.rule-toggle-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(74,222,128,.08)}
+.bancos-empty{text-align:center;padding:2rem;color:var(--muted);font-size:.82rem}
 /* DETAILS */
 #screen-details{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
 .details-hero{background:var(--surface);border-bottom:1px solid var(--border);padding:2rem 1.5rem 3rem}
@@ -366,13 +398,15 @@ input,select{font-family:var(--ff);outline:none;transition:all .2s}
   <div class="tabs">
     <div class="tab active" onclick="switchTab('dashboard',this)">Dashboard</div>
     <div class="tab" onclick="switchTab('transacciones',this)">Transacciones</div>
+    <div class="tab" onclick="switchTab('bancos',this)">🏦 Bancos</div>
     <div class="tab" onclick="switchTab('resumen',this)">Resumen</div>
     <div class="tab" onclick="switchTab('metas',this)">🎯 Metas</div>
-    <div class="tab" onclick="switchTab('perfil',this)">⚙️ Mi perfil</div>
+    <div class="tab" onclick="switchTab('perfil',this)">⚙️ Perfil</div>
   </div>
   <div class="app-content">
     <div id="tab-dashboard"></div>
     <div id="tab-transacciones" class="hidden"></div>
+    <div id="tab-bancos" class="hidden"></div>
     <div id="tab-resumen" class="hidden"></div>
     <div id="tab-metas" class="hidden"></div>
     <div id="tab-perfil" class="hidden"></div>
@@ -449,6 +483,8 @@ async function loadFromSheets(){
     if(data.ok){
       if(data.users&&data.users.length===2){data.users.forEach((u,i)=>{state.users[i]={...state.users[i],...u};});}
       state.transactions=data.transactions||[];
+      state.metas=data.metas||[];
+      state.bancos=data.bancos||[];
       setSyncStatus('ok');return true;
     }
     setSyncStatus('error');return false;
@@ -467,6 +503,7 @@ function stopAutoRefresh(){if(autoRefreshTimer)clearInterval(autoRefreshTimer);}
 function rerenderCurrentTab(){
   if(currentTab==='dashboard')renderDashboard();
   else if(currentTab==='transacciones')renderTransacciones();
+  else if(currentTab==='bancos')renderBancos();
   else if(currentTab==='resumen')renderResumen();
   else if(currentTab==='metas')renderMetas();
   else if(currentTab==='perfil')renderPerfil();
@@ -556,7 +593,7 @@ function logout(){stopAutoRefresh();state.currentUser=null;showScreen('landing')
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if(el)el.classList.add('active');currentTab=name;
-  ['dashboard','transacciones','resumen','metas','perfil'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('hidden',t!==name);});
+  ['dashboard','transacciones','bancos','resumen','metas','perfil'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('hidden',t!==name);});
   rerenderCurrentTab();
 }
 
@@ -583,7 +620,12 @@ function ruleBar(label,spent,budget,cls){
 // ── TRANSACCIONES ──
 let txFilter='todos';let txType='gasto';let txCategory='necesidad';
 function renderTransacciones(){
-  document.getElementById('tab-transacciones').innerHTML='<div class="add-form"><div class="section-title" style="margin-bottom:1rem">REGISTRAR MOVIMIENTO</div><div class="type-grid">'+[['gasto','Gasto'],['ingreso_extra','Ingreso extra'],['ahorro','Ahorro'],['deuda','Deuda']].map(([k,l])=>'<div class="type-chip '+(txType===k?'sel':'')+'" data-type="'+k+'" onclick="selType(\''+k+'\',this)">'+l+'</div>').join('')+'</div><div id="cat-row" style="display:'+(txType==='gasto'?'flex':'none')+';gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">'+[['necesidad','Necesidad'],['deseo','Deseo']].map(([k,l])=>'<div class="type-chip '+(txCategory===k?'sel':'')+'" data-type="'+k+'" onclick="selCat(\''+k+'\',this)" style="'+(txCategory===k?'border-color:var(--accent);color:var(--accent)':'')+'">'+l+'</div>').join('')+'</div><div class="form-grid"><div class="f-field"><label>Descripcion</label><input id="tx-desc" placeholder="Ej: Mercado"></div><div class="f-field"><label>Monto</label><input type="number" id="tx-amount" placeholder="0.00"></div><div class="f-field"><label>Moneda</label><select id="tx-cur"><option value="USD">USD</option><option value="VES">VES</option></select></div><div class="f-field"><label>Fecha</label><input type="date" id="tx-date" value="'+new Date().toISOString().split('T')[0]+'"></div></div><button class="btn-add" id="btn-add-tx" onclick="addTx()">+ Agregar</button></div><div class="filter-bar">'+[['todos','Todos'],['gasto','Gastos'],['ingreso_extra','Ingresos extra'],['ahorro','Ahorros'],['deuda','Deudas']].map(([k,l])=>'<div class="filter-chip '+(txFilter===k?'active':'')+'" onclick="setFilter(\''+k+'\',this)">'+l+'</div>').join('')+'</div><div class="tx-list" id="tx-list"></div>';
+  // Build banco options for current user
+  const misBancos=(state.bancos||[]).filter(b=>b.owner===state.currentUser);
+  const bancoOpts=misBancos.length>0
+    ?'<option value="">Sin banco específico</option>'+misBancos.map(b=>'<option value="'+b.id+'">'+b.nombre+'</option>').join('')
+    :'<option value="">Sin bancos registrados</option>';
+  document.getElementById('tab-transacciones').innerHTML='<div class="add-form"><div class="section-title" style="margin-bottom:1rem">REGISTRAR MOVIMIENTO</div><div class="type-grid">'+[['gasto','Gasto'],['ingreso_extra','Ingreso extra'],['ahorro','Ahorro'],['deuda','Deuda']].map(([k,l])=>'<div class="type-chip '+(txType===k?'sel':'')+'" data-type="'+k+'" onclick="selType(\''+k+'\',this)">'+l+'</div>').join('')+'</div><div id="cat-row" style="display:'+(txType==='gasto'?'flex':'none')+';gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">'+[['necesidad','Necesidad'],['deseo','Deseo']].map(([k,l])=>'<div class="type-chip '+(txCategory===k?'sel':'')+'" data-type="'+k+'" onclick="selCat(\''+k+'\',this)" style="'+(txCategory===k?'border-color:var(--accent);color:var(--accent)':'')+'">'+l+'</div>').join('')+'</div><div class="form-grid"><div class="f-field"><label>Descripcion</label><input id="tx-desc" placeholder="Ej: Mercado"></div><div class="f-field"><label>Monto</label><input type="number" id="tx-amount" placeholder="0.00"></div><div class="f-field"><label>Moneda</label><select id="tx-cur"><option value="USD">USD</option><option value="VES">VES</option></select></div><div class="f-field"><label>Fecha</label><input type="date" id="tx-date" value="'+new Date().toISOString().split('T')[0]+'"></div><div class="f-field"><label>Banco (opcional)</label><select id="tx-banco">'+bancoOpts+'</select></div></div><button class="btn-add" id="btn-add-tx" onclick="addTx()">+ Agregar</button></div><div class="filter-bar">'+[['todos','Todos'],['gasto','Gastos'],['ingreso_extra','Ingresos extra'],['ahorro','Ahorros'],['deuda','Deudas']].map(([k,l])=>'<div class="filter-chip '+(txFilter===k?'active':'')+'" onclick="setFilter(\''+k+'\',this)">'+l+'</div>').join('')+'</div><div class="tx-list" id="tx-list"></div>';
   renderTxList();
 }
 function selType(t,el){txType=t;document.querySelectorAll('.type-chip[data-type]').forEach(c=>{if(['gasto','ingreso_extra','ahorro','deuda'].includes(c.dataset.type))c.classList.remove('sel');});el.classList.add('sel');const cr=document.getElementById('cat-row');if(cr)cr.style.display=t==='gasto'?'flex':'none';}
@@ -594,8 +636,10 @@ async function addTx(){
   const amount=parseFloat(document.getElementById('tx-amount').value);
   const cur=document.getElementById('tx-cur').value;
   const date=document.getElementById('tx-date').value;
+  const bancoId=document.getElementById('tx-banco')?.value||'';
   if(!desc||!amount||!date)return;
-  const tx={id:Date.now(),desc,amount,currency:cur,type:txType,category:txType==='gasto'?txCategory:txType,date,user:state.currentUser};
+  const bancoNombre=bancoId?(state.bancos||[]).find(b=>b.id===bancoId)?.nombre||'':'';
+  const tx={id:Date.now(),desc,amount,currency:cur,type:txType,category:txType==='gasto'?txCategory:txType,date,user:state.currentUser,bancoId,bancoNombre};
   const btn=document.getElementById('btn-add-tx');btn.disabled=true;btn.textContent='Guardando...';
   state.transactions.push(tx);
   const ok=await saveToSheets({action:'addTransaction',transaction:tx});
@@ -615,7 +659,7 @@ function renderTxList(){
   let txs=[...state.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date));
   if(txFilter!=='todos')txs=txs.filter(t=>t.type===txFilter);
   if(!txs.length){list.innerHTML='<div class="empty-state">Sin movimientos registrados aun.<br>Agrega tu primer registro!</div>';return;}
-  list.innerHTML=txs.map(t=>'<div class="tx-item"><div class="tx-dot '+t.type+'"></div><div style="flex:1;min-width:0"><div class="tx-desc">'+t.desc+'</div><div class="tx-meta">'+t.date+' · '+(state.users[t.user??0]?.name||'?')+' · '+typeLabel(t.type)+'</div></div><div class="tx-right"><div class="tx-amount" style="color:'+typeColor(t.type)+'">'+(t.type==='gasto'||t.type==='deuda'?'-':'+')+' '+fmt(t.amount,t.currency)+'</div><div class="tx-cat">'+(t.category||'')+'</div></div><button class="tx-delete" onclick="deleteTx('+t.id+')">x</button></div>').join('');
+  list.innerHTML=txs.map(t=>'<div class="tx-item"><div class="tx-dot '+t.type+'"></div><div style="flex:1;min-width:0"><div class="tx-desc">'+t.desc+'</div><div class="tx-meta">'+t.date+' · '+(state.users[t.user??0]?.name||'?')+' · '+typeLabel(t.type)+(t.bancoNombre?' · 🏦 '+t.bancoNombre:'')+'</div></div><div class="tx-right"><div class="tx-amount" style="color:'+typeColor(t.type)+'">'+(t.type==='gasto'||t.type==='deuda'?'-':'+')+' '+fmt(t.amount,t.currency)+'</div><div class="tx-cat">'+(t.category||'')+'</div></div><button class="tx-delete" onclick="deleteTx('+t.id+')">x</button></div>').join('');
 }
 
 // ── RESUMEN ──
@@ -700,6 +744,193 @@ async function resetMyTransactions(){
   hideLoading();
   const msg=document.getElementById('pf-save-msg');
   if(msg){msg.textContent='Transacciones borradas';setTimeout(()=>msg.textContent='',2000);}
+}
+
+// ── BANCOS ────────────────────────────────────────────────────────
+let bancosRuleMode='salario'; // 'salario' | 'bancos'
+
+function getTotalBancosUSD(owner){
+  return (state.bancos||[]).filter(b=>b.owner===owner).reduce((a,b)=>a+toUSD(b.saldo,b.currency),0);
+}
+
+function renderBancos(){
+  if(!state.bancos) state.bancos=[];
+  const u0=state.users[0]; const u1=state.users[1];
+  const sal0=toUSD(toMonthly(u0.salary,u0.freq),u0.currency);
+  const sal1=toUSD(toMonthly(u1.salary,u1.freq),u1.currency);
+  const totalSalario=sal0+sal1;
+  const bancos0=(state.bancos).filter(b=>b.owner===0);
+  const bancos1=(state.bancos).filter(b=>b.owner===1);
+  const total0=getTotalBancosUSD(0);
+  const total1=getTotalBancosUSD(1);
+  const totalBancos=total0+total1;
+  // 50/30/20 base según modo
+  const base = bancosRuleMode==='bancos' ? totalBancos : totalSalario;
+  // Gastos del mes actual
+  const now=new Date(); const month=now.getMonth(); const year=now.getFullYear();
+  const txM=state.transactions.filter(t=>{const d=new Date(t.date);return d.getMonth()===month&&d.getFullYear()===year;});
+  const needsSpent=txM.filter(t=>t.type==='gasto'&&t.category==='necesidad').reduce((a,t)=>a+toUSD(t.amount,t.currency),0);
+  const wantsSpent=txM.filter(t=>t.type==='gasto'&&t.category==='deseo').reduce((a,t)=>a+toUSD(t.amount,t.currency),0);
+  const savSpent=txM.filter(t=>t.type==='ahorro'||t.type==='deuda').reduce((a,t)=>a+toUSD(t.amount,t.currency),0);
+
+  const isMine = (b)=>b.owner===state.currentUser;
+
+  const el=document.getElementById('tab-bancos');
+  el.innerHTML=
+    '<div class="section-title">SALDOS BANCARIOS</div>'+
+
+    // Tarjetas totales
+    '<div class="bancos-totales">'+
+      '<div class="banco-total-card"><div class="btc-label">Total familiar en bancos</div><div class="btc-val">'+fmtBoth(totalBancos)+'</div><div class="btc-sub">'+u0.name+' + '+u1.name+'</div></div>'+
+      '<div class="banco-total-card"><div class="btc-label">'+u0.name+'</div><div class="btc-val" style="color:var(--accent)">'+fmtBoth(total0)+'</div><div class="btc-sub">'+bancos0.length+' cuenta(s)</div></div>'+
+      '<div class="banco-total-card"><div class="btc-label">'+u1.name+'</div><div class="btc-val" style="color:var(--accent2)">'+fmtBoth(total1)+'</div><div class="btc-sub">'+bancos1.length+' cuenta(s)</div></div>'+
+    '</div>'+
+
+    // Cuentas por usuario (dos columnas)
+    '<div class="bancos-cols">'+
+      bancosUserHTML(0, bancos0, u0)+
+      bancosUserHTML(1, bancos1, u1)+
+    '</div>'+
+
+    // 50/30/20 con toggle
+    '<div class="bancos-rule-section">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">'+
+        '<div class="rule-title" style="margin:0">Desglose 50/30/20</div>'+
+        '<div class="rule-toggle">'+
+          '<div class="rule-toggle-btn '+(bancosRuleMode==='salario'?'active':'')+'" onclick="setBancosRuleMode(\'salario\')">Por salario</div>'+
+          '<div class="rule-toggle-btn '+(bancosRuleMode==='bancos'?'active':'')+'" onclick="setBancosRuleMode(\'bancos\')">Por saldo real</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="font-size:.75rem;color:var(--muted);margin-bottom:1rem">'+
+        (bancosRuleMode==='bancos'
+          ? 'Basado en el dinero disponible HOY en todos los bancos: '+fmtBoth(totalBancos)
+          : 'Basado en el ingreso mensual combinado: '+fmtBoth(totalSalario))+
+      '</div>'+
+      ruleBar('Necesidades (50%)', needsSpent, base*0.5, 'needs')+
+      ruleBar('Deseos (30%)', wantsSpent, base*0.3, 'wants')+
+      ruleBar('Ahorro + Deudas (20%)', savSpent, base*0.2, 'savings')+
+      '<div style="background:var(--surface2);border-radius:var(--r2);padding:1rem;margin-top:1rem">'+
+        '<div style="font-size:.72rem;color:var(--muted);margin-bottom:.6rem;font-weight:600">DISPONIBLE POR CATEGORÍA</div>'+
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem">'+
+          dispCard('Necesidades',base*0.5-needsSpent,'needs')+
+          dispCard('Deseos',base*0.3-wantsSpent,'wants')+
+          dispCard('Ahorro',base*0.2-savSpent,'savings')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+}
+
+function dispCard(label, val, cls){
+  const color={needs:'var(--needs)',wants:'var(--wants)',savings:'var(--savings)'}[cls];
+  const positive=val>=0;
+  return '<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:.75rem;text-align:center">'+
+    '<div style="font-size:.7rem;color:var(--muted);margin-bottom:.3rem">'+label+'</div>'+
+    '<div style="font-family:var(--mono);font-size:.85rem;color:'+(positive?color:'var(--danger)')+'">'+fmtBoth(Math.abs(val))+'</div>'+
+    '<div style="font-size:.65rem;color:var(--muted);margin-top:.2rem">'+(positive?'disponible':'excedido')+'</div>'+
+  '</div>';
+}
+
+function bancosUserHTML(userIdx, bancos, u){
+  const isMine=userIdx===state.currentUser;
+  const totalUser=bancos.reduce((a,b)=>a+toUSD(b.saldo,b.currency),0);
+  return '<div class="bancos-user-section">'+
+    '<div class="bancos-user-header">'+
+      '<div class="bancos-user-avatar" style="background:rgba(74,222,128,.12);color:'+u.color+'">'+( u.initial||u.name.charAt(0))+'</div>'+
+      '<span class="bancos-user-name">'+u.name+'</span>'+
+      '<span class="bancos-user-total">'+fmtBoth(totalUser)+'</span>'+
+    '</div>'+
+    (bancos.length===0?'<div class="bancos-empty">'+(isMine?'No tienes bancos agregados aún.':'Sin bancos registrados.')+'</div>':
+      bancos.map(b=>bancoItemHTML(b,isMine)).join('')
+    )+
+    (isMine?'<button class="btn-add-banco" onclick="showAddBanco()">+ Agregar banco</button>':'')+
+  '</div>';
+}
+
+function bancoItemHTML(b, editable){
+  const saldoUSD=toUSD(b.saldo,b.currency);
+  const icons={'USD':'💵','VES':'🏦'};
+  return '<div class="banco-item">'+
+    '<div class="banco-icon">'+(b.emoji||icons[b.currency]||'🏦')+'</div>'+
+    '<div class="banco-info">'+
+      '<div class="banco-name">'+b.nombre+'</div>'+
+      '<div class="banco-cur">'+b.currency+'</div>'+
+    '</div>'+
+    '<div style="text-align:right;flex-shrink:0">'+
+      '<div class="banco-saldo" style="color:'+(b.currency==='USD'?'var(--accent)':'var(--accent2)')+'">'+fmt(b.saldo,b.currency)+'</div>'+
+      (b.currency==='VES'?'<div class="banco-saldo-usd">≈ '+fmt(saldoUSD,'USD')+'</div>':'')+
+    '</div>'+
+    (editable?'<div class="banco-actions">'+
+      '<button class="btn-banco-edit" onclick="showEditBanco(\''+b.id+'\')">✏️</button>'+
+      '<button class="btn-banco-del" onclick="deleteBanco(\''+b.id+'\')">🗑️</button>'+
+    '</div>':'')+
+  '</div>';
+}
+
+function setBancosRuleMode(mode){
+  bancosRuleMode=mode;
+  renderBancos();
+}
+
+function showAddBanco(){
+  showBancoModal(null);
+}
+function showEditBanco(id){
+  const b=(state.bancos||[]).find(b=>b.id===id);
+  if(b) showBancoModal(b);
+}
+
+function showBancoModal(banco){
+  const existing=document.getElementById('modal-banco');
+  if(existing) existing.remove();
+  const overlay=document.createElement('div');
+  overlay.className='modal-overlay'; overlay.id='modal-banco';
+  overlay.innerHTML='<div class="modal-box">'+
+    '<div class="modal-title">'+(banco?'Editar banco':'Agregar banco')+'</div>'+
+    '<div class="modal-field"><label>Nombre del banco</label><input id="bk-nombre" value="'+(banco?banco.nombre:'')+'" placeholder="Ej: Banesco, Mercantil, Zelle"></div>'+
+    '<div class="modal-field"><label>Saldo actual</label><input type="number" id="bk-saldo" value="'+(banco?banco.saldo:'')+'" placeholder="0.00"></div>'+
+    '<div class="modal-field"><label>Moneda</label><select id="bk-cur">'+
+      '<option value="USD" '+(banco&&banco.currency==='USD'?'selected':'')+'>USD — Dólares</option>'+
+      '<option value="VES" '+(banco&&banco.currency==='VES'?'selected':'')+'>VES — Bolívares</option>'+
+    '</select></div>'+
+    '<div class="modal-field"><label>Emoji (opcional)</label><input id="bk-emoji" value="'+(banco?banco.emoji||'':'')+'" placeholder="🏦 💵 💳" maxlength="4" style="max-width:100px"></div>'+
+    '<div class="modal-btns">'+
+      '<button class="btn-modal-cancel" onclick="document.getElementById(\'modal-banco\').remove()">Cancelar</button>'+
+      '<button class="btn-modal-ok" onclick="saveBanco(\''+(banco?banco.id:'')+'\')">Guardar</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(overlay);
+}
+
+async function saveBanco(id){
+  const nombre=document.getElementById('bk-nombre').value.trim();
+  const saldo=parseFloat(document.getElementById('bk-saldo').value)||0;
+  const currency=document.getElementById('bk-cur').value;
+  const emoji=document.getElementById('bk-emoji').value.trim();
+  if(!nombre) return;
+  document.getElementById('modal-banco')?.remove();
+  if(!state.bancos) state.bancos=[];
+  if(id){
+    const b=state.bancos.find(b=>b.id===id);
+    if(b){b.nombre=nombre;b.saldo=saldo;b.currency=currency;b.emoji=emoji;}
+    showLoading('Actualizando...');
+    await saveToSheets({action:'updateBanco',banco:state.bancos.find(b=>b.id===id)});
+  } else {
+    const banco={id:'bk'+Date.now(),nombre,saldo,currency,emoji,owner:state.currentUser};
+    state.bancos.push(banco);
+    showLoading('Guardando banco...');
+    await saveToSheets({action:'addBanco',banco});
+  }
+  hideLoading();
+  renderBancos();
+}
+
+async function deleteBanco(id){
+  if(!confirm('Eliminar este banco?')) return;
+  state.bancos=(state.bancos||[]).filter(b=>b.id!==id);
+  showLoading('Eliminando...');
+  await saveToSheets({action:'deleteBanco',id});
+  hideLoading();
+  renderBancos();
 }
 
 // ── METAS DE AHORRO ───────────────────────────────────────────────
