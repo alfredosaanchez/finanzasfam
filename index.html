@@ -59,7 +59,7 @@ input,select{font-family:var(--ff);outline:none;transition:all .2s}
 .login-title{font-family:var(--mono);font-size:1.3rem;font-weight:500;margin-bottom:.4rem}
 .login-sub{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
 .users-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem}
-.user-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:1.2rem;text-align:center;cursor:pointer;transition:all .2s}
+.user-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:1.2rem;text-align:center;cursor:pointer;transition:all .2s,opacity .3s}
 .user-btn:hover{border-color:var(--accent);transform:translateY(-2px)}
 .user-btn.selected{border-color:var(--accent);background:rgba(74,222,128,.08)}
 .user-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:1.1rem;margin:0 auto .5rem}
@@ -537,18 +537,34 @@ async function testAndSaveUrl(){
 }
 
 // ── LOGIN ──
-function showLogin(){
+async function showLogin(){
   if(!sheetUrl){showScreen('setup');return;}
+  // Mostrar pantalla de login con estado de carga
   showScreen('login');
-  loadFromSheets().then(ok=>{
-    if(ok){
-      document.getElementById('uname-0').textContent=state.users[0].name;
-      document.getElementById('uname-1').textContent=state.users[1].name;
-      document.getElementById('uav-0').textContent=state.users[0].initial||'A';
-      document.getElementById('uav-1').textContent=state.users[1].initial||'B';
-    }
-  });
+  // Ocultar los botones de usuario y mostrar spinner mientras carga
+  document.getElementById('ubtn-0').style.opacity='0.3';
+  document.getElementById('ubtn-1').style.opacity='0.3';
+  document.getElementById('uname-0').textContent='Cargando...';
+  document.getElementById('uname-1').textContent='Cargando...';
+  document.getElementById('uav-0').textContent='·';
+  document.getElementById('uav-1').textContent='·';
   document.getElementById('login-err').textContent='';
+  // Cargar datos reales desde Sheets
+  const ok=await loadFromSheets();
+  if(ok){
+    document.getElementById('uname-0').textContent=state.users[0].name;
+    document.getElementById('uname-1').textContent=state.users[1].name;
+    document.getElementById('uav-0').textContent=state.users[0].initial||state.users[0].name.charAt(0).toUpperCase();
+    document.getElementById('uav-1').textContent=state.users[1].initial||state.users[1].name.charAt(0).toUpperCase();
+  } else {
+    document.getElementById('uname-0').textContent=state.users[0].name;
+    document.getElementById('uname-1').textContent=state.users[1].name;
+    document.getElementById('uav-0').textContent=state.users[0].initial||'A';
+    document.getElementById('uav-1').textContent=state.users[1].initial||'B';
+  }
+  document.getElementById('ubtn-0').style.opacity='1';
+  document.getElementById('ubtn-1').style.opacity='1';
+  selectUser(0);
 }
 let selectedUser=0;
 function selectUser(i){selectedUser=i;document.getElementById('ubtn-0').classList.toggle('selected',i===0);document.getElementById('ubtn-1').classList.toggle('selected',i===1);document.getElementById('login-err').textContent='';}
